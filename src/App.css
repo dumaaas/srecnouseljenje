@@ -42,15 +42,20 @@
 
 .scene-container {
   width: 100vw;
-  height: 100vh;
-  position: relative;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
   background: linear-gradient(45deg, #1a1a2e, #16213e);
 }
 
 .play-controls {
-  position: absolute;
-  bottom: 20px;
+  position: fixed;
+  bottom: max(12px, env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;

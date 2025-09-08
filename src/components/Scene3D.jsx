@@ -22,6 +22,14 @@ function Scene3D() {
   })
   const [curtainFullyOpen, setCurtainFullyOpen] = useState(false)
 
+  // Preload overlay images to avoid first-show delay in production
+  useEffect(() => {
+    const lord = new Image()
+    lord.src = LORD_IMG_URL
+    const masljiva = new Image()
+    masljiva.src = MASLJIVA_IMG_URL
+  }, [])
+
   // Vremena kada treba da se pojavi lord.png (u sekundama)
   const lordTimestamps = [0, 12, 144, 240, 312, 324] // 00:00, 00:11, 02:23, 04:00, 05:11, 05:24
 
@@ -111,7 +119,7 @@ function Scene3D() {
       audioRef.current.currentTime = newTime
       setCurrentTime(newTime)
       
-      console.log(`Klik na ${(percent * 100).toFixed(1)}% - premotano na ${formatTime(newTime)}`)
+      // debug: seek percentage and time (muted in production)
     }
   }
 
@@ -273,6 +281,8 @@ function Scene3D() {
               src={LORD_IMG_URL} 
               alt="Lord" 
               className="lord-image"
+              loading="eager"
+              decoding="async"
             />
           </div>
           <div className="masljiva-overlay">
@@ -280,6 +290,8 @@ function Scene3D() {
               src={MASLJIVA_IMG_URL} 
               alt="Masljiva" 
               className="masljiva-image"
+              loading="eager"
+              decoding="async"
             />
           </div>
         </>

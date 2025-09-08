@@ -8,6 +8,7 @@ function Curtain({ isPlaying, setCurtainFullyOpen }) {
   // Stanje za animaciju zavjese
   const animationProgress = useRef(isPlaying ? 1 : 0) // 0 = zatvoreno, 1 = otvoreno
   const targetProgress = useRef(isPlaying ? 1 : 0)
+  const lastReportedOpen = useRef(null)
   
   // Reference za zavjese
   const leftCurtain = useRef()
@@ -88,13 +89,13 @@ function Curtain({ isPlaying, setCurtainFullyOpen }) {
       delta * speed
     )
     
-    // DEBUG
-    console.log('isPlaying:', isPlaying, 'progress:', animationProgress.current.toFixed(2))
-    
-    // Obavesti kad je zavjesa dovoljno otvorena (80% ili više)
+    // Obavesti parent SAMO na promenu stanja otvorenosti (spreči spam re-render)
     if (setCurtainFullyOpen) {
       const isFullyOpen = animationProgress.current >= 0.8
-      setCurtainFullyOpen(isFullyOpen)
+      if (lastReportedOpen.current !== isFullyOpen) {
+        lastReportedOpen.current = isFullyOpen
+        setCurtainFullyOpen(isFullyOpen)
+      }
     }
     
     // ANIMACIJA - POVUĆI ZAVJESE SKROZ NA STRANE!
@@ -105,8 +106,6 @@ function Curtain({ isPlaying, setCurtainFullyOpen }) {
       leftCurtain.current.position.x = -2 - (openDistance * animationProgress.current)
       rightCurtain.current.position.x = 2 + (openDistance * animationProgress.current)
       
-      // Debug pozicije
-      console.log('Left X:', leftCurtain.current.position.x.toFixed(1), 'Right X:', rightCurtain.current.position.x.toFixed(1))
     }
   })
   
