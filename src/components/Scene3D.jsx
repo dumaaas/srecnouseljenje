@@ -7,6 +7,24 @@ import GuitarPlayingScene from './GuitarPlayingScene'
 const AUDIO_URL = new URL('../assets/lazljiva.mp3', import.meta.url).href
 const LORD_IMG_URL = new URL('../assets/lord.png', import.meta.url).href
 const MASLJIVA_IMG_URL = new URL('../assets/masljiva.webp', import.meta.url).href
+
+// Preload critical assets as early as possible (first paint)
+if (typeof document !== 'undefined') {
+  const ensurePreload = (href, as) => {
+    try {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = as
+      link.href = href
+      // Some browsers use fetchpriority for earlier fetch
+      link.fetchPriority = 'high'
+      document.head.appendChild(link)
+    } catch (_) {}
+  }
+  ensurePreload(LORD_IMG_URL, 'image')
+  ensurePreload(MASLJIVA_IMG_URL, 'image')
+  ensurePreload(AUDIO_URL, 'audio')
+}
 import LoadingSpinner from './LoadingSpinner'
 
 function Scene3D() {
@@ -135,6 +153,7 @@ function Scene3D() {
     if (!audioRef.current) {
       // Kreirati audio element ako ne postoji
       audioRef.current = new Audio(AUDIO_URL)
+      audioRef.current.preload = 'auto'
       audioRef.current.loop = true
       audioRef.current.volume = 0.7
       
@@ -283,6 +302,7 @@ function Scene3D() {
               className="lord-image"
               loading="eager"
               decoding="async"
+              fetchpriority="high"
             />
           </div>
           <div className="masljiva-overlay">
@@ -292,7 +312,9 @@ function Scene3D() {
               className="masljiva-image"
               loading="eager"
               decoding="async"
+              fetchpriority="high"
             />
+          
           </div>
         </>
       )}
