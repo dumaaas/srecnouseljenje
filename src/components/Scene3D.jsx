@@ -2,6 +2,11 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { Suspense, useState, useEffect, useRef } from 'react'
 import GuitarPlayingScene from './GuitarPlayingScene'
+
+// Vite/Vercel asset URLs
+const AUDIO_URL = new URL('../assets/lazljiva.mp3', import.meta.url).href
+const LORD_IMG_URL = new URL('../assets/lord.png', import.meta.url).href
+const MASLJIVA_IMG_URL = new URL('../assets/masljiva.webp', import.meta.url).href
 import LoadingSpinner from './LoadingSpinner'
 
 function Scene3D() {
@@ -121,7 +126,7 @@ function Scene3D() {
   const togglePlayPause = () => {
     if (!audioRef.current) {
       // Kreirati audio element ako ne postoji
-      audioRef.current = new Audio('/src/assets/lazljiva.mp3')
+      audioRef.current = new Audio(AUDIO_URL)
       audioRef.current.loop = true
       audioRef.current.volume = 0.7
       
@@ -265,14 +270,14 @@ function Scene3D() {
         <>
           <div className="lord-overlay">
             <img 
-              src="/src/assets/lord.png" 
+              src={LORD_IMG_URL} 
               alt="Lord" 
               className="lord-image"
             />
           </div>
           <div className="masljiva-overlay">
             <img 
-              src="/src/assets/masljiva.webp" 
+              src={MASLJIVA_IMG_URL} 
               alt="Masljiva" 
               className="masljiva-image"
             />

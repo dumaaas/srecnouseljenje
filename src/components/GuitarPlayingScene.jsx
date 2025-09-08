@@ -4,9 +4,13 @@ import { useGLTF, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import Curtain from './Curtain'
 
+// Vite/Vercel asset URLs
+const GUITAR_GLTF_URL = new URL('../models/Guitar.glb', import.meta.url).href
+const SANDALS_GLTF_URL = new URL('../models/Sandals.glb', import.meta.url).href
+
 function GuitarModel({ isPlaying }) {
   const group = useRef()
-  const { scene } = useGLTF('/src/models/Guitar.glb')
+  const { scene } = useGLTF(GUITAR_GLTF_URL)
   
   // Clone the scene to avoid conflicts
   const clonedScene = scene.clone()
@@ -67,7 +71,7 @@ function GuitarModel({ isPlaying }) {
 
 function SandalsModel({ isPlaying }) {
   const group = useRef()
-  const { scene } = useGLTF('/src/models/Sandals.glb')
+  const { scene } = useGLTF(SANDALS_GLTF_URL)
   
   // Clone the scene to avoid conflicts
   const clonedScene = scene.clone()
@@ -277,7 +281,7 @@ function GuitarPlayingScene({ isPlaying, curtainFullyOpen, setCurtainFullyOpen }
 }
 
 // Preload models
-useGLTF.preload('/src/models/Guitar.glb')
-useGLTF.preload('/src/models/Sandals.glb')
+useGLTF.preload(GUITAR_GLTF_URL)
+useGLTF.preload(SANDALS_GLTF_URL)
 
 export default GuitarPlayingScene
